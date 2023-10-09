@@ -23,6 +23,7 @@ namespace MoviesApi.Repositories
             movie.Status = Status.Active;
             movie.CreatedAt = DateTime.UtcNow;
             await _db.Movies.AddAsync(movie);
+            await _db.SaveChangesAsync();
         }
 
     }
