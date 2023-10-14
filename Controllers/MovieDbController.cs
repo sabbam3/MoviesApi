@@ -20,24 +20,33 @@ namespace MoviesApi.Controllers
         [HttpPost("AddMovie")]
         public async Task CreateMovieAsync(CreateMovieRequest request)
         {
-            if(string.IsNullOrEmpty(request.Name))
-            {
-                throw new ArgumentNullException(nameof(request.Name));
-            }
-            if(string.IsNullOrEmpty(request.Description))
-            {
-                throw new ArgumentNullException(nameof(request.Description));
-            }
-            if(request.ReleaseYear < 1895)
-            {
-                throw new ArgumentException("Release year must be at least 1895");
-            }
-            if (string.IsNullOrEmpty(request.Director))
-            {
-                throw new ArgumentNullException(nameof(request.Director));
-            }
-            await _movieRepository.CreateMovieAsync(request);
-            
+            await _movieRepository.CreateMovieAsync(request);   
         }
+        [HttpGet("get-all-movies")]
+        public async Task<List<Movie>> GetAllMoviesAsync()
+        {
+            return await _movieRepository.GetAllMoviesAsync();
+        }
+        [HttpGet("get-movie-by-id")]
+        public async Task<Movie?> GetMovieAsync(int id)
+        {
+            return await _movieRepository.GetMovieAsync(id);
+        }
+        [HttpPost("removie-movie")]
+        public async Task RemoveMovieAsync(int id)
+        {
+            await _movieRepository.RemoveMovieAsync(id);
+        }
+        [HttpPost("search-movie")]
+        public async Task<Movie?> SearchMovieAsync([FromBody] SearchMovieRequest request)
+        {
+            return await _movieRepository.SearchMovieAsync(request);
+        }
+        [HttpPost("update-movie")]
+        public async Task UpdateMovieAsync(int id, MovieRequest request)
+        {
+            await _movieRepository.UpdateMovieAsync(id, request);
+        }
+
     }
 }
