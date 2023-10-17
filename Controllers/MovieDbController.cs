@@ -10,43 +10,47 @@ namespace MoviesApi.Controllers
     [Route("movie/[controller]")]
     public class MovieDbController : ControllerBase
     {
-        private readonly IMovieRepository _movieRepository;
-
-        public MovieDbController(IMovieRepository movieRepository)
+ 
+        private readonly IMovieService _movieService;
+        private readonly ValidateRequests _validateRequests;
+        public MovieDbController(IMovieService movieService, ValidateRequests validateRequests)
         {
-            _movieRepository = movieRepository; 
-
+            _movieService = movieService;
+            _validateRequests = validateRequests;
         }
-        [HttpPost("AddMovie")]
+        [HttpPost("add-movie")]
         public async Task CreateMovieAsync(CreateMovieRequest request)
         {
-            await _movieRepository.CreateMovieAsync(request);   
+            _validateRequests.ValidateCreateRequest(request);   
+            await _movieService.CreateMovieAsync(request);   
         }
         [HttpGet("get-all-movies")]
         public async Task<List<Movie>> GetAllMoviesAsync()
         {
-            return await _movieRepository.GetAllMoviesAsync();
+            return await _movieService.GetAllMoviesAsync();
         }
         [HttpGet("get-movie-by-id")]
         public async Task<Movie?> GetMovieAsync(int id)
         {
-            return await _movieRepository.GetMovieAsync(id);
+            return await _movieService.GetMovieAsync(id);
         }
-        [HttpPost("removie-movie")]
+        [HttpPost("remove-movie")]
         public async Task RemoveMovieAsync(int id)
         {
-            await _movieRepository.RemoveMovieAsync(id);
+            await _movieService.RemoveMovieAsync(id);
         }
         [HttpPost("search-movie")]
-        public async Task<Movie?> SearchMovieAsync([FromBody] SearchMovieRequest request)
+        public async Task<List<Movie>?> SearchMovieAsync([FromBody] SearchMovieRequest request)
         {
-            return await _movieRepository.SearchMovieAsync(request);
-        }
+            _validateRequests.ValidateSearchMovieRequest(request);
+            return await _movieService.SearchMovieAsync(request);
+        } 
         [HttpPost("update-movie")]
-        public async Task UpdateMovieAsync(int id, MovieRequest request)
+        public async Task UpdateMovieAsync(int id, UpdateMovieRequest request)
         {
-            await _movieRepository.UpdateMovieAsync(id, request);
+            _validateRequests.ValidateUpdateRequest(request);
+            await _movieService.UpdateMovieAsync(id, request);
         }
 
-    }
+    } 
 }

@@ -1,7 +1,10 @@
 using Microsoft.EntityFrameworkCore;
+using MoviesApi;
 using MoviesApi.Abstraction;
 using MoviesApi.Db;
 using MoviesApi.Repositories;
+using MoviesApi.Services;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,7 +16,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<AppDbContext>(c =>c.UseSqlServer(builder.Configuration["AppDbContextConnection"]), ServiceLifetime.Scoped);
 builder.Services.AddScoped<IMovieRepository, MovieRepository>();
-
+builder.Services.AddTransient<IMovieService, MovieService>();
+builder.Services.AddTransient<ValidateRequests>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

@@ -1,6 +1,6 @@
 ﻿namespace MoviesApi.Requests
 {
-    public class MovieRequest
+    public class UpdateMovieRequest
     {
         public string Name { get; set; }
         public string Description { get; set; }

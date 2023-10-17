@@ -5,11 +5,11 @@ namespace MoviesApi.Abstraction
 {
     public interface IMovieRepository
     {
-      Task CreateMovieAsync(CreateMovieRequest request);
+      Task CreateMovieAsync(Movie movie);
       Task<List<Movie>> GetAllMoviesAsync();
-      Task<Movie?> GetMovieAsync(int id);
-      Task RemoveMovieAsync(int id);
-      Task<Movie?> SearchMovieAsync(SearchMovieRequest request);
-      Task UpdateMovieAsync(int id, MovieRequest request);
+      Task<Movie?> GetMovieByIdAsync(int id);
+      Task<List<Movie>?> GetMoviesByName(string name);
+      Task<List<Movie>?> GetMoviesByDirector(string director);
+      Task SaveChangesAsync();
     }
 }
